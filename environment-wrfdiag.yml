@@ -1,0 +1,16 @@
+name: wrfdiag
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - wrf-python
+  - xarray
+  - netcdf4
+  - numpy
+  - pandas
+  - scipy
+  - dask
+  - hdf5
+  - libnetcdf
+  - netcdf-fortran
+  - nco
