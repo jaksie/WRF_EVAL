@@ -1,35 +1,30 @@
 fcst = {
+   file_type = NETCDF_NCCF;
+
    field = [
       {
          name       = "T2";
-         level      = "(6,*,*)";
+         level      = [ "(0,*,*)" ];
          cat_thresh = [];
       }
    ];
 }
 
 obs = {
+   message_type = [ "ADPSFC" ];
+
+   obs_window = {
+      beg = 0;
+      end = 0;
+   }
+
    field = [
       {
-         name       = "TMP";
-         level      = "Z2"; 
+         name       = "T2";
+         level      = [ "Z2" ];
          cat_thresh = [];
       }
    ];
-}
-
-message_type = [ "ADPSFC" ];
-
-obs_window = {
-   beg = 0;
-   end =  0;
-}
-
-interp = {
-   type = {
-      method = NEAREST;
-      width  = 1;
-   }
 }
 
 output_flag = {
@@ -38,15 +33,19 @@ output_flag = {
    cts    = NONE;
    mctc   = NONE;
    mcts   = NONE;
+
    cnt    = BOTH;
    sl1l2  = BOTH;
-   sal1l2 = BOTH;
+   sal1l2 = NONE;
    vl1l2  = NONE;
    val1l2 = NONE;
+
    pct    = NONE;
    pstd   = NONE;
    pjc    = NONE;
    prc    = NONE;
+
    eclv   = NONE;
+
    mpr    = BOTH;
 }

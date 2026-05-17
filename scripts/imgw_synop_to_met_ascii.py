@@ -12,14 +12,14 @@ output:
 
 mapa (IMGW -> MET [jednostki]):
 
-TEMP -> T2 [°C -> K]
-PPPS -> PSFC_HPA [hPa]
-FWR  -> WSPD10 [m/s]
-KRWR -> WDIR10 [degree]
-WLGW -> RH2 [%]
-TPTR -> TD2 [°C]
-PPPM -> SLP [hPa]
-WO6G -> APCP_6H [mm]
+TEMP -> T2 [°C -> K], height = 2 m
+PPPS -> PSFC_HPA [hPa], height = 0 m
+FWR  -> WSPD10 [m/s], height = 10 m
+KRWR -> WDIR10 [degree], height = 10 m
+WLGW -> RH2 [%], height = 2 m
+TPTR -> TD2 [°C], height = 2 m
+PPPM -> SLP [hPa], height = 0 m
+WO6G -> APCP_6H [mm], level = 21600 s
 """
 
 from pathlib import Path
@@ -27,15 +27,30 @@ import argparse
 
 import pandas as pd
 
+"""
+IMGW_NAME: (MET_NAME, STATUS_NAME, ADDITIVE_OFFSET, LEVEL, HEIGHT)
+
+MET ASCII:
+- level: pressure level [hPa] albo accumulation interval [s]
+- height: wysokość [m] nad gruntem / poziomem odniesienia
+
+Dla zmiennych przyziemnych level="NA" i sensownego height:
+T2/RH2/TD2 -> Z2
+WSPD10/WDIR10 -> Z10
+PSFC_HPA/SLP -> Z0
+
+Dla APCP_6H level=21600, bo to akumulacja 6 h w sekundach
+"""
+
 VARIABLE_MAP = {
-    "TEMP": ("T2", "WTEMP", 273.15),
-    "PPPS": ("PSFC_HPA", "WPPPS", 0.0),
-    "FWR":  ("WSPD10", "WFWR", 0.0),
-    "KRWR": ("WDIR10", "WKRWR", 0.0),
-    "WLGW": ("RH2", "WWLGW", 0.0),
-    "TPTR": ("TD2", "WTPTR", 0.0),
-    "PPPM": ("SLP", "WPPPM", 0.0),
-    "WO6G": ("APCP_6H", "WWO6G", 0.0),
+    "TEMP": ("T2", "WTEMP", 273.15, "NA", 2.0),
+    "PPPS": ("PSFC_HPA", "WPPPS", 0.0, "NA", 0.0),
+    "FWR":  ("WSPD10", "WFWR", 0.0, "NA", 10.0),
+    "KRWR": ("WDIR10", "WKRWR", 0.0, "NA", 10.0),
+    "WLGW": ("RH2", "WWLGW", 0.0, "NA", 2.0),
+    "TPTR": ("TD2", "WTPTR", 0.0, "NA", 2.0),
+    "PPPM": ("SLP", "WPPPM", 0.0, "NA", 0.0),
+    "WO6G": ("APCP_6H", "WWO6G", 0.0, 21600.0, "NA"),
 }
 
 IMGW_USECOLS = {
@@ -52,17 +67,18 @@ IMGW_USECOLS = {
     "WFWR": 26,
     "TEMP": 29,
     "WTEMP": 30,
-    "WLGW": 38,
-    "WWLGW": 39,
-    "TPTR": 40,
-    "WTPTR": 41,
-    "PPPS": 42,
-    "WPPPS": 43,
-    "PPPM": 44,
-    "WPPPM": 45,
-    "WO6G": 49,
-    "WWO6G": 50,
+    "WLGW": 37,
+    "WWLGW": 38,
+    "TPTR": 39,
+    "WTPTR": 40,
+    "PPPS": 41,
+    "WPPPS": 42,
+    "PPPM": 43,
+    "WPPPM": 44,
+    "WO6G": 48,
+    "WWO6G": 49,
 }
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -88,9 +104,11 @@ def parse_args():
 
     return parser.parse_args()
 
+
 def read_stations(path):
     stations = pd.read_csv(path)
     return stations
+
 
 def read_imgw_csv(path):
     raw = pd.read_csv(
@@ -106,6 +124,7 @@ def read_imgw_csv(path):
         df[name] = raw.iloc[:, idx]
 
     return df
+
 
 def add_valid_time(df):
     df = df.copy()
@@ -124,12 +143,13 @@ def add_valid_time(df):
         nonexistent="shift_forward",
         ambiguous="infer",
     )
-    
+
     utc_time = local_time.dt.tz_convert("UTC")
 
     df["valid_time"] = utc_time
 
     return df
+
 
 def attach_station_metadata(obs, stations):
     obs = obs.copy()
@@ -139,7 +159,7 @@ def attach_station_metadata(obs, stations):
     stations["station_id"] = stations["station_id"].astype(str)
 
     merged = obs.merge(
-        stations, 
+        stations,
         left_on="NSP",
         right_on="station_id",
         how="inner"
@@ -147,10 +167,11 @@ def attach_station_metadata(obs, stations):
 
     return merged
 
+
 def build_obs_records(obs):
     records = []
 
-    for imgw_name, (out_name, status_name, offset) in VARIABLE_MAP.items():
+    for imgw_name, (out_name, status_name, offset, level, height) in VARIABLE_MAP.items():
         for _, row in obs.iterrows():
             value_raw = row[imgw_name]
             status = row[status_name]
@@ -171,14 +192,32 @@ def build_obs_records(obs):
                     "lon": float(row["lon"]),
                     "elev": float(row["elev"]),
                     "var_name": out_name,
+                    "level": level,
+                    "height": height,
                     "value": value,
                 }
             )
-        
+
     return pd.DataFrame.from_records(records)
+
+
+def format_level_or_height(value):
+    if value == "NA":
+        return "NA"
+
+    value = float(value)
+
+    if value.is_integer():
+        return str(int(value))
+
+    return f"{value:.3f}"
+
 
 def format_met_ascii_line(row):
     valid_time = row["valid_time"].strftime("%Y%m%d_%H%M%S")
+
+    level = format_level_or_height(row["level"])
+    height = format_level_or_height(row["height"])
 
     return (
         f"ADPSFC "
@@ -188,11 +227,12 @@ def format_met_ascii_line(row):
         f"{row['lon']:.5f} "
         f"{row['elev']:.1f} "
         f"{row['var_name']} "
-        f"NA "
-        f"NA "
+        f"{level} "
+        f"{height} "
         f"NA "
         f"{row['value']:.3f}"
     )
+
 
 def write_met_ascii(records, output_path):
     with open(output_path, "w", encoding="utf-8") as f:
@@ -200,13 +240,17 @@ def write_met_ascii(records, output_path):
             line = format_met_ascii_line(row)
             f.write(line + "\n")
 
+
 def main():
     args = parse_args()
+    
+    print(f"Stacje: {args.stations}")
+    print(f"Pliki CSV: {args.csv}")
+    print(f"Wyjście: {args.output}")
+
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
     stations = read_stations(args.stations)
-    # print(len(stations))
-    # print(stations.head())
 
     frames = []
 
@@ -219,24 +263,9 @@ def main():
     obs = attach_station_metadata(obs, stations)
 
     records = build_obs_records(obs)
-    # print(format_met_ascii_line(records.iloc[0]))
 
     write_met_ascii(records, args.output)
 
-    # print(len(records))
-    # print(records.head())
-
-    # print(len(obs))
-    # print(obs.head())
-
-    # print(obs[["ROK", "MC", "DZ", "GG", "valid_time"]].head())
-    # print(obs["valid_time"].dt.strftime("%Y-%m-%d %H:%M:%S %Z").head())
-
-    # print(obs[["NSP", "POST", "ROK", "MC", "DZ", "GG", "valid_time", "TEMP", "WTEMP"]].head())
-
-    # print(f"Ładowanie stacji z {args.stations}...")
-    # print(f"Ładowanie danych z {args.csv}...")
-    # print(f"Zapis do {args.output}...")
 
 if __name__ == "__main__":
     main()
