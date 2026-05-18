@@ -1,0 +1,130 @@
+Kod stacji                                               9  NSP
+Nazwa stacji                                            30  POST
+Rok                                                      4  ROK
+Miesiąc                                                  2  MC
+Dzień                                                    2  DZ
+Godzina                                                  2  GG
+Wysokość podstawy chmur CL CM szyfrowana [kod]           1  HPOD
+Status pomiaru HPOD                                      1  WHPOD
+Wysokość podstawy niższej  [m]                           7  HPON
+Status pomiaru HPON                                      1  WHPON
+Wysokość podstawy wyższej [m]                            7  HPOW
+Status pomiaru HPOW                                      1  WHPOW
+Wysokość podstawy tekstowy [opis]                       10  HTXT
+Pomiar przyrzadem 1 (niższa) [P]                         1  POM1
+Pomiar przyrzadem 2 (wyższa) [P]                         1  POM2
+Widzialność  [kod]                                       5  WID
+Status pomiaru WID                                       1  WWID
+Widzialność operatora [m]                                7  WIDO
+Status pomiaru WIDO                                      1  WWIDO
+Widzialność automat [m]                                  7  WIDA
+Status pomiaru WIDA                                      1  WWIDA
+Zachmurzenie ogólne [oktanty]                            3  NOG
+Status pomiaru NOG                                       1  WNOG
+Kierunek wiatru  [°]                                     5  KRWR
+Status pomiaru KRWR                                      1  WKRWR
+Prędkość wiatru  [m/s]                                   5  FWR
+Status pomiaru FWR                                       1  WFWR
+Poryw wiatru  [m/s]                                      5  PORW
+Status pomiaru PORW                                      1  WPORW
+Temperatura powietrza [°C]                               6/1  TEMP
+Status pomiaru TEMP                                      1  WTEMP
+Temperatura termometru zwilżonego [°C]                   6/1  TTZW
+Status pomiaru TTZW                                      1  WTTZW
+Wskaźnik wentylacji [W/N]                                1  WENT
+Wskaźnik lodu       [L/W]                                1  TWLW
+Ciśnienie pary wodnej [hPa]                              6/1  CPW
+Status pomiaru CPW                                       1  WCPW
+Wilgotność względna [%]                                  5  WLGW
+Status pomiaru WLGW                                      1  WWLGW
+Temperatura punktu rosy [°C]                             6/1  TPTR
+Status pomiaru TPTR                                      1  WTPTR
+Ciśnienie na pozimie stacji [hPa]                        8/1  PPPS
+Status pomiaru PPPS                                      1  WPPPS
+Ciśnienie na pozimie morza [hPa]                         8/1  PPPM
+Status pomiaru PPPM                                      1  WPPPM
+Charakterystyka tendencji [kod]                          3  TECH
+Wartość tendencji [wartość]                              6/1  APP
+Status pomiaru APP                                       1  WAPP
+Opad za 6 godzin [mm]                                    8/1  WO6G
+Status pomiaru WO6G                                      1  WWO6G
+Rodzaj opadu za 6 godzin [kod]                           3  ROPT
+Status pomiaru ROPT                                      1  WROPT
+Pogoda bieżąca [kod]                                     2  POGB
+Pogoda ubiegła [kod]                                     1  POGU
+Zachmurzenie niskie [oktanty]                            1  CLCM
+Status pomiaru CLCM                                      1  WCLCM
+Chmury CL [kod]                                          1  CHCL
+Status pomiaru CHCL                                      1  WCHCL
+Chmury CL tekstem                                       40  CHLT
+Chmury CM [kod]                                          1  CHCM
+Status pomiaru CHCM                                      1  WCHCM
+Chmury CM tekstem                                       20  CHMT
+Chmury CH [kod]                                          1  CHCH
+Status pomiaru CHCH                                      1  WCHCH
+Chmury CH tekstem                                       20  CHHT
+Stan gruntu [kod]                                        5  SGRN
+Status pomiaru SGRN                                      1  WSGRN
+Niedosyt wilgotności [hPa]                               6/1  DEFI
+Status pomiaru DEFI                                      1  WDEFI
+Usłonecznienie                                           6/1  USLN
+Status pomiaru USLN                                      1  WUSLN
+Wystąpienie rosy [0/1]                                   1  ROSW
+Status pomiaru ROSW                                      1  WROSW
+Poryw maksymalny za okres WW [m/s]                       5  PORK
+Status pomiaru PORK                                      1  WPORK
+Godzina wystąpienia porywu                               2  GODP
+Minuta wystąpienia porywu                                2  MINP
+Temperatura gruntu -5 [°C]                               6/1  TG05
+Status pomiaru TG05                                      1  WTG05
+Temperatura gruntu -10 [°C]                              6/1  TG10
+Status pomiaru TG10                                      1  WTG10
+Temperatura gruntu -20 [°C]                              6/1  TG20
+Status pomiaru TG20                                      1  WTG20
+Temperatura gruntu -50 [°C]                              6/1  TG50
+Status pomiaru TG50                                      1  WTG50
+Temperatura gruntu -100 [°C]                             6/1  TG100
+Status pomiaru TG100                                     1  WTG100
+Temperatura minimalna za 12 godzin  [°C]                 6/1  TMIN
+Status pomiaru TMIN                                      1  WTMIN
+Temperatura maksymalna za 12 godzin [°C]                 6/1  TMAX
+Status pomiaru TMAX                                      1  WTMAX
+Temperatura minimalna przy gruncie za 12 godzin [°C]     6/1  TGMI
+Status pomiaru TGMI                                      1  WTGMI
+Równoważnik wodny śniegu [mm/cm]                         6/1  RWSN
+Status pomiaru RWSN                                      1  WRWSN
+Wysokość pokrywy śnieżnej [cm]                           5  PKSN
+Status pomiaru PKSN                                      1  WPKSN
+Wysokość świeżo spadłego śniegu  [cm]                    5  HSS
+Status pomiaru HSS                                       1  WHSS
+Wysokość śniegu na poletku [cm]                          5  GRSN
+Status pomiaru GRSN                                      1  WGRSN
+Gatunek śniegu  [kod]                                    1  GATS
+Ukształtowanie pokrywy [kod]                             1  UKPO
+Wysokość próbki [cm]                                     5  HPRO
+Status pomiaru HPRO                                      1  WHPRO
+Zapas wody w śniegu [mm]                                 5  CIPR
+Status pomiaru CIPR                                      1  WCIPR
+
+Status "8" brak pomiaru
+Status "9" brak zjawiska
+
+Dla pola "Wysokość pokrywy śnieżnej" (PKSN) stosuje się wartości kodowane:
+997 - mniejsza od 0.5 cm
+998 - nieciągła
+999 - niemożliwa do pomiaru
+
+Dla pola "Rodzaj opadu za 6 godzin" stosuje się wartości kodowane
+5     -    rosa, szron, szadź, mgła
+6     -    deszcz, mżawka
+7     -    śnieg z deszczem, śnieg, pył diamentowy, 
+  krupy śnieżne, śnieg ziarnisty
+8     -    grad, krupy lodowe, ziarna lodowe
+9     -    śnieg z deszczem, śnieg, ziarna lodowe,
+  grad, śnieg ziarnisty, krupy śnieżne 
+
+Dla pola "Usłonecznienie" (USLN) do marca 2015 pomiar jest zapisany na koniec godziny czasu miejsowego słonecznego (zapis na godzinę 12:00 to okres 11-12).
+Po tej dacie usłonecznienie godzinowe zapisywane jest według miejscowego czasu słonecznego na początek godziny (np zapis na godzinę 12:00 to okres 12-13).
+
+Dla pola stan gruntu koduje się klucze od 0-9 dla gruntu bez lodu "E" i klucze 10-19 dla gruntu z lodem "E'" (jedynka z przodu oznacza grunt z lodem E' druga liczba to numer klucza)
+Zapas wody w śniegu [mm] bywał w przeszłości opisywany jako ‘Ciężar próbki [g]
