@@ -1,0 +1,69 @@
+services:
+  mariadb:
+    image: mariadb:10.11
+    container_name: met_mariadb
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - met_mariadb_data:/var/lib/mysql
+      - ./conf.d:/etc/mysql/conf.d:ro
+
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  metplus-runner:
+    image: local/metplus-metplotpy:6.2.1
+    container_name: metplus_runner
+    restart: "no"
+
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+    volumes:
+      - ../..:/work
+
+    working_dir: /work
+
+    stdin_open: true
+    tty: true
+
+    command: bash
+
+  metviewer:
+    image: dtcenter/metviewer
+    container_name: met_metviewer
+    restart: unless-stopped
+
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+    environment:
+      - METVIEWER_URL=http://localhost:8080/metviewer
+      - MYSQL_HOST=mariadb
+      - MYSQL_PORT=3306
+      - MYSQL_USER=metuser
+      - MYSQL_PASSWORD=123
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ../../output/metviewer:/opt/metviewer_output
+      - ./metviewer/webapp:/opt/tomcat/webapps/metviewer
+
+    entrypoint: ["/opt/tomcat/bin/catalina.sh", "run"]
+
+
+volumes:
+  met_mariadb_data:

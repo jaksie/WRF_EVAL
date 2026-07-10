@@ -1,4 +1,4 @@
-model = "WRFDIAG";
+model = "WRF";
 
 fcst = {
    file_type = NETCDF_NCCF;
@@ -14,8 +14,8 @@ obs = {
    ${METPLUS_OBS_FIELD}
 
    obs_window = {
-      beg = 0;
-      end = 0;
+      beg = -300;
+      end = 300;
    }
 }
 
