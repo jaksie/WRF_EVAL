@@ -44,7 +44,7 @@ Dla APCP_6H level=21600, bo to akumulacja 6 h w sekundach
 
 VARIABLE_MAP = {
     "TEMP": ("T2", "WTEMP", 273.15, "NA", 2.0),
-    "PPPS": ("PSFC", "WPPPS", 0.0, "NA", 0.0),
+    "PPPS": ("PSFC_HPA", "WPPPS", 0.0, "NA", 0.0),
     "FWR":  ("WSPD10", "WFWR", 0.0, "NA", 10.0),
     "KRWR": ("WDIR10", "WKRWR", 0.0, "NA", 10.0),
     "WLGW": ("RH2", "WWLGW", 0.0, "NA", 2.0),
@@ -125,11 +125,7 @@ def read_imgw_csv(path):
 
     return df
 
-"""
-Debata nad formatem danych trwa: na ten moment przeważają racje za UTC 
-(na wrzesień max. T2 przypadało na godz. 13, przy spodziewanej 15 czasu lokalnego;
-czasy APCP_6H przypadają na 0, 6, 12, 18)
-"""
+
 def add_valid_time(df):
     df = df.copy()
 
@@ -139,7 +135,19 @@ def add_valid_time(df):
         + df["DZ"].str.zfill(2) + " "
         + df["GG"].str.zfill(2) + ":00:00"
     )
-    df["valid_time"] = pd.to_datetime(time_text)
+
+    local_time = pd.to_datetime(time_text)
+
+    local_time = local_time.dt.tz_localize(
+        "Europe/Warsaw",
+        nonexistent="shift_forward",
+        ambiguous="infer",
+    )
+
+    utc_time = local_time.dt.tz_convert("UTC")
+
+    df["valid_time"] = utc_time
+
     return df
 
 
