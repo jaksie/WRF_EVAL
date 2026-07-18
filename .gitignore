@@ -1,0 +1,32 @@
+# --- Duże pliki danych meteorologicznych ---
+*.nc
+*.nc4
+*.grib
+*.grib2
+*.grb
+*.grb2
+
+# Pliki WRF/WPS
+wrfout*
+wrfinput*
+wrfbdy*
+wrfrst*
+met_em.*
+geo_em.*
+GRIBFILE.*
+
+# Surowe i przetworzone dane (np. ERA5)
+MOA/era5/raw/
+MOA/era5/processed/
+MOA_project/era5/raw/
+
+# --- Python ---
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# --- Różne ---
+*.log
+.DS_Store
