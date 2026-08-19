@@ -24,8 +24,8 @@ MYSQL  := docker exec -i $(DB_CONTAINER) mariadb -u$(DB_USER) -p$(DB_PASS)
 # ============================================================
 # Dane wejsciowe
 # ============================================================
-WRFOUT   ?= input/wrf/wrfout_d01_2026-01-15_03:00:00
-WRFDIAG  ?= input/wrf_diag/wrfdiag_d01_2026-01-15_03.nc
+WRFOUT ?= /home/WRF-operational-archive/2026/06/20260613/Results/wrfout_d01_2026-06-28_03:00:00
+WRFDIAG ?= input/wrf_diag/wrfdiag_d01_2026-06-28_03.nc
 
 IMGW_CSV  ?= input/imgw/raw/*.csv
 STATIONS  ?= input/imgw/metadata/stations.csv
