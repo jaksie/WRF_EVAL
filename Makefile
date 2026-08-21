@@ -24,8 +24,9 @@ MYSQL  := docker exec -i $(DB_CONTAINER) mariadb -u$(DB_USER) -p$(DB_PASS)
 # ============================================================
 # Dane wejsciowe
 # ============================================================
-WRFOUT ?= /home/WRF-operational-archive/2026/06/20260613/Results/wrfout_d01_2026-06-28_03:00:00
-WRFDIAG ?= input/wrf_diag/wrfdiag_d01_2026-06-28_03.nc
+PIPELINE_DATE_TIME ?=
+WRFOUT             ?=
+WRFDIAG            ?=
 
 IMGW_CSV  ?= input/imgw/raw/*.csv
 STATIONS  ?= input/imgw/metadata/stations.csv
@@ -51,7 +52,7 @@ env-update:
 	conda env update -n $(CONDA_ENV) -f $(ENV_FILE) --prune
 
 dirs:
-	mkdir -p input/wrf input/wrf_diag \
+	mkdir -p input/wrf input/wrfdiag \
 	         input/imgw/raw input/imgw/metadata \
 	         input/obs_ascii input/obs_nc \
 	         output/point_stat output/metviewer \
@@ -60,11 +61,11 @@ dirs:
 # ============================================================
 # Preprocessing
 # ============================================================
-.PHONY: wrfdiag obs-ascii obs-nc obs check-inputs
-wrfdiag: dirs
+.PHONY: wrfdiag obs-ascii obs-nc obs
+wrfdiag: dirs 
 	conda run -n $(CONDA_ENV) python scripts/wrfout_to_wrfdiag.py \
-		--input $(WRFOUT) \
-		--output $(WRFDIAG)
+		--input "$(WRFOUT)" \
+		--output "$(WRFDIAG)"
 
 obs-ascii: dirs
 	conda run -n $(CONDA_ENV) python scripts/imgw_synop_to_met_ascii.py \
@@ -72,27 +73,29 @@ obs-ascii: dirs
 		--stations $(STATIONS) \
 		--output $(OBS_ASCII)
 
-obs-nc: dirs
+obs-nc: dirs obs-ascii
 	rm -f $(OBS_NC)
 	$(RUNNER) ascii2nc /work/$(OBS_ASCII) /work/$(OBS_NC)
 
-obs: obs-ascii obs-nc
+obs: obs-nc
 
 # ============================================================
 # PointStat
 # ============================================================
 .PHONY: pointstat
-pointstat:
-	rm -rf $(POINTSTAT_OUT)
+pointstat: wrfdiag obs-nc
 	mkdir -p $(POINTSTAT_OUT)
-	$(RUNNER) /metplus/METplus/ush/run_metplus.py -c /work/$(POINTSTAT_CONF)
-	@echo "--- liczba plikow .stat ---"
-	@ls $(POINTSTAT_OUT)/*.stat | wc -l
+	$(RUNNER) /metplus/METplus/ush/run_metplus.py \
+		-c /work/$(POINTSTAT_CONF) \
+		config.INIT_BEG=$(PIPELINE_DATE_TIME) \
+		config.INIT_END=$(PIPELINE_DATE_TIME)
+	@echo "--- laczna liczba plikow .stat ---"
+	@find "$(POINTSTAT_OUT)" -maxdepth 1 -type f -name '*.stat' | wc -l
 
 # ============================================================
 # Baza danych
 # ============================================================
-.PHONY: db-up db-reset db-load db-verify
+.PHONY: db-up db-reset db-load db-verify db-build
 db-up:
 	$(COMPOSE) up -d mariadb
 
@@ -101,10 +104,17 @@ db-reset: db-up
 	$(MYSQL) $(DB_NAME) < $(DB_SCHEMA)
 	@echo "Baza $(DB_NAME) zresetowana"
 
-db-load:
-	$(RUNNER) /metplus/METplus/ush/run_metplus.py -c /work/$(DBLOAD_CONF)
+db-load: db-up
+	@stat_file=$$(find "$(POINTSTAT_OUT)" -maxdepth 1 -type f -name '*.stat' \
+		-print | sort | head -n 1); \
+	valid_time=$$(awk 'NR == 2 { gsub("_", "", $$5); print substr($$5, 1, 10); exit }' \
+		"$$stat_file"); \
+	$(RUNNER) /metplus/METplus/ush/run_metplus.py \
+		-c /work/$(DBLOAD_CONF) \
+		config.VALID_BEG=$$valid_time \
+		config.VALID_END=$$valid_time
 
-db-verify:
+db-verify: db-up
 	$(MYSQL) $(DB_NAME) -e "\
 	SELECT COUNT(*) AS cnt_rows FROM line_data_cnt; \
 	SELECT COUNT(DISTINCT fcst_lead) AS leads FROM line_data_cnt; \
@@ -112,6 +122,11 @@ db-verify:
 	  JOIN line_data_cnt c ON c.stat_header_id=sh.stat_header_id \
 	  GROUP BY sh.fcst_var; \
 	SELECT DISTINCT model FROM stat_header;"
+
+db-build: 
+	$(MAKE) db-reset
+	$(MAKE) db-load
+	$(MAKE) db-verify
 
 # ============================================================
 # METviewer
@@ -128,7 +143,8 @@ metviewer-down:
 # Sekwencje
 # ============================================================
 .PHONY: pipeline clean-output
-pipeline: wrfdiag obs pointstat db-reset db-load db-verify
+pipeline: pointstat
+	$(MAKE) db-build
 
 clean-output:
 	rm -rf output/point_stat/*
