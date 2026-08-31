@@ -28,10 +28,10 @@ PIPELINE_DATE_TIME ?=
 WRFOUT             ?=
 WRFDIAG            ?=
 
-IMGW_CSV  ?= input/imgw/raw/*.csv
-STATIONS  ?= input/imgw/metadata/stations.csv
-OBS_ASCII ?= input/obs_ascii/imgw_synop.ascii
-OBS_NC    ?= input/obs_nc/imgw_synop.nc
+IMGW_CSV        ?= input/imgw/raw/*.csv
+STATIONS        ?= input/imgw/metadata/stations.csv
+OBS_ASCII_DIR   ?= input/obs_ascii
+OBS_NC          ?= input/obs_nc/imgw_synop.nc
 
 # ============================================================
 # Konfiguracje METplus
@@ -68,14 +68,17 @@ wrfdiag: dirs
 		--output "$(WRFDIAG)"
 
 obs-ascii: dirs
-	conda run -n $(CONDA_ENV) python scripts/imgw_synop_to_met_ascii.py \
+	conda run --no-capture-output -n $(CONDA_ENV) \
+		python scripts/imgw_synop_to_met_ascii.py \
 		--csv $(IMGW_CSV) \
-		--stations $(STATIONS) \
-		--output $(OBS_ASCII)
+		--stations "$(STATIONS)" \
+		--output-dir "$(OBS_ASCII_DIR)"
 
 obs-nc: dirs obs-ascii
-	rm -f $(OBS_NC)
-	$(RUNNER) ascii2nc /work/$(OBS_ASCII) /work/$(OBS_NC)
+	rm -f "$(OBS_NC)"
+	$(RUNNER) ascii2nc \
+		"/work/$(OBS_ASCII_DIR)" \
+		"/work/$(OBS_NC)"
 
 obs: obs-nc
 
