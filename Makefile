@@ -31,7 +31,7 @@ WRFDIAG            ?=
 IMGW_CSV        ?= input/imgw/raw/*.csv
 STATIONS        ?= input/imgw/metadata/stations.csv
 OBS_ASCII_DIR   ?= input/obs_ascii
-OBS_NC          ?= input/obs_nc/imgw_synop.nc
+OBS_NC_DIR      ?= input/obs_nc
 
 # ============================================================
 # Konfiguracje METplus
@@ -80,14 +80,14 @@ obs-ascii: obs-download
 
 obs-nc: dirs obs-ascii
 	for ascii_file in "$(OBS_ASCII_DIR)"/imgw_synop_??????.ascii; do \
-		[ -f "$$ascii_file" ] || continue;
+		[ -f "$$ascii_file" ] || continue; \
 		filename=$${ascii_file##*/}; \
 		nc_file="$(OBS_NC_DIR)/$${filename%.ascii}.nc"; \
 		if [ ! -f "$$nc_file" ]; then \
 			echo "Tworzenie $$nc_file"; \
 			$(RUNNER) ascii2nc \
-				"/work/$$ascii_file" \
-				"/work/$$nc_file"; \
+				"/work/$(OBS_ASCII_DIR)/$$ascii_file" \
+				"/work/$(OBS_NC_DIR)/$$nc_file"; \
 		else \
 			echo "$$nc_file istnieje, pomijam"; \
 		fi; \
