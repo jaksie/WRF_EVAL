@@ -61,13 +61,17 @@ dirs:
 # ============================================================
 # Preprocessing
 # ============================================================
-.PHONY: wrfdiag obs-ascii obs-nc obs
+.PHONY: wrfdiag obs-download obs-ascii obs-nc obs
 wrfdiag: dirs 
 	conda run -n $(CONDA_ENV) python scripts/wrfout_to_wrfdiag.py \
 		--input "$(WRFOUT)" \
 		--output "$(WRFDIAG)"
 
-obs-ascii: dirs
+obs-download: dirs
+	conda run --no-capture-output -n $(CONDA_ENV) \
+		python scripts/download_imgw_raw.py
+
+obs-ascii: obs-download
 	conda run --no-capture-output -n $(CONDA_ENV) \
 		python scripts/imgw_synop_to_met_ascii.py \
 		--csv $(IMGW_CSV) \
@@ -75,10 +79,19 @@ obs-ascii: dirs
 		--output-dir "$(OBS_ASCII_DIR)"
 
 obs-nc: dirs obs-ascii
-	rm -f "$(OBS_NC)"
-	$(RUNNER) ascii2nc \
-		"/work/$(OBS_ASCII_DIR)" \
-		"/work/$(OBS_NC)"
+	for ascii_file in "$(OBS_ASCII_DIR)"/imgw_synop_??????.ascii; do \
+		[ -f "$$ascii_file" ] || continue;
+		filename=$${ascii_file##*/}; \
+		nc_file="$(OBS_NC_DIR)/$${filename%.ascii}.nc"; \
+		if [ ! -f "$$nc_file" ]; then \
+			echo "Tworzenie $$nc_file"; \
+			$(RUNNER) ascii2nc \
+				"/work/$$ascii_file" \
+				"/work/$$nc_file"; \
+		else \
+			echo "$$nc_file istnieje, pomijam"; \
+		fi; \
+	done
 
 obs: obs-nc
 
