@@ -103,14 +103,14 @@
         </indep>
         <plot_stat>median</plot_stat>
         <tmpl>
-            <data_file>plot_20260819_170202.data</data_file>
-            <plot_file>plot_20260819_170202.png</plot_file>
-            <r_file>plot_20260819_170202.R</r_file>
+            <data_file>plot_20260906_205706.data</data_file>
+            <plot_file>plot_20260906_205706.png</plot_file>
+            <r_file>plot_20260906_205706.R</r_file>
             <title>T2 | FBAR, OBAR &amp; ME</title>
             <x_label>Fcst Lead Time [h]</x_label>
             <y1_label>T2 [K]</y1_label>
             <y2_label/>
-            <caption></caption>
+            <caption/>
             <job_title/>
             <keep_revisions>false</keep_revisions>
             <listdiffseries1>list()</listdiffseries1>
@@ -143,7 +143,7 @@
         <title_offset>-1</title_offset>
         <title_align>0.5</title_align>
         <xtlab_orient>1</xtlab_orient>
-        <xtlab_perp>8.3</xtlab_perp>
+        <xtlab_perp>8.8</xtlab_perp>
         <xtlab_horiz>0.5</xtlab_horiz>
         <xtlab_freq>0</xtlab_freq>
         <xtlab_size>1</xtlab_size>

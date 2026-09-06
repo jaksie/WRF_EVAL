@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plot_spec>
+    <!-- Based on test.xml: median aggregation, WRF, FULL domain; configure connection credentials when needed. -->
+    <connection>
+        <host>mariadb</host>
+        <database>mv_wrf_surface</database>
+        <user>******</user>
+        <password>******</password>
+        <management_system>mariadb</management_system>
+    </connection>
+    <folders>
+        <r_tmpl>/opt/tomcat/webapps/metviewer//R_tmpl</r_tmpl>
+        <r_work>/opt/tomcat/webapps/metviewer//R_work</r_work>
+        <plots>/opt/tomcat/webapps/metviewer_output//plots</plots>
+        <data>/opt/tomcat/webapps/metviewer_output//data</data>
+        <scripts>/opt/tomcat/webapps/metviewer_output//scripts</scripts>
+    </folders>
+    <plot>
+        <template>series_plot.R_tmpl</template>
+        <dep>
+            <dep1>
+                <fcst_var name="T2">
+                    <stat>MAE</stat>
+                    <stat>RMSE</stat>
+                </fcst_var>
+            </dep1>
+            <dep2>
+                <fcst_var name="T2">
+                    <stat>ME</stat>
+                </fcst_var>
+            </dep2>
+        </dep>
+        <series1>
+            <field name="model">
+                <val>WRF</val>
+            </field>
+        </series1>
+        <series2>
+            <field name="model">
+                <val>WRF</val>
+            </field>
+        </series2>
+        <plot_fix>
+            <field equalize="false" name="model">
+                <set name="model_0">
+                    <val>WRF</val>
+                </set>
+            </field>
+            <field equalize="false" name="vx_mask">
+                <set name="vx_mask_0">
+                    <val>FULL</val>
+                </set>
+            </field>
+        </plot_fix>
+        <plot_cond />
+        <indep equalize="false" name="fcst_lead">
+            <val label="0" plot_val="">0</val>
+            <val label="1" plot_val="">10000</val>
+            <val label="2" plot_val="">20000</val>
+            <val label="3" plot_val="">30000</val>
+            <val label="4" plot_val="">40000</val>
+            <val label="5" plot_val="">50000</val>
+            <val label="6" plot_val="">60000</val>
+            <val label="7" plot_val="">70000</val>
+            <val label="8" plot_val="">80000</val>
+            <val label="9" plot_val="">90000</val>
+            <val label="10" plot_val="">100000</val>
+            <val label="11" plot_val="">110000</val>
+            <val label="12" plot_val="">120000</val>
+            <val label="13" plot_val="">130000</val>
+            <val label="14" plot_val="">140000</val>
+            <val label="15" plot_val="">150000</val>
+            <val label="16" plot_val="">160000</val>
+            <val label="17" plot_val="">170000</val>
+            <val label="18" plot_val="">180000</val>
+            <val label="19" plot_val="">190000</val>
+            <val label="20" plot_val="">200000</val>
+            <val label="21" plot_val="">210000</val>
+            <val label="22" plot_val="">220000</val>
+            <val label="23" plot_val="">230000</val>
+            <val label="24" plot_val="">240000</val>
+            <val label="25" plot_val="">250000</val>
+            <val label="26" plot_val="">260000</val>
+            <val label="27" plot_val="">270000</val>
+            <val label="28" plot_val="">280000</val>
+            <val label="29" plot_val="">290000</val>
+            <val label="30" plot_val="">300000</val>
+            <val label="31" plot_val="">310000</val>
+            <val label="32" plot_val="">320000</val>
+            <val label="33" plot_val="">330000</val>
+            <val label="34" plot_val="">340000</val>
+            <val label="35" plot_val="">350000</val>
+            <val label="36" plot_val="">360000</val>
+            <val label="37" plot_val="">370000</val>
+            <val label="38" plot_val="">380000</val>
+            <val label="39" plot_val="">390000</val>
+            <val label="40" plot_val="">400000</val>
+            <val label="41" plot_val="">410000</val>
+            <val label="42" plot_val="">420000</val>
+            <val label="43" plot_val="">430000</val>
+            <val label="44" plot_val="">440000</val>
+            <val label="45" plot_val="">450000</val>
+            <val label="46" plot_val="">460000</val>
+            <val label="47" plot_val="">470000</val>
+            <val label="48" plot_val="">480000</val>
+            <val label="49" plot_val="">490000</val>
+            <val label="50" plot_val="">500000</val>
+            <val label="51" plot_val="">510000</val>
+        </indep>
+        <plot_stat>median</plot_stat>
+        <tmpl>
+            <data_file>t2_errors_by_lead.data</data_file>
+            <plot_file>t2_errors_by_lead.png</plot_file>
+            <r_file>t2_errors_by_lead.R</r_file>
+            <title>T2 | MAE, RMSE &amp; ME</title>
+            <x_label>Fcst Lead Time [h]</x_label>
+            <y1_label>T2 error [K]</y1_label>
+            <y2_label />
+            <caption />
+            <job_title />
+            <keep_revisions>false</keep_revisions>
+            <listdiffseries1>list()</listdiffseries1>
+            <listdiffseries2>list()</listdiffseries2>
+        </tmpl>
+        <execution_type>Rscript</execution_type>
+        <event_equal>false</event_equal>
+        <vert_plot>false</vert_plot>
+        <x_reverse>false</x_reverse>
+        <num_stats>false</num_stats>
+        <indy1_stag>false</indy1_stag>
+        <indy2_stag>false</indy2_stag>
+        <grid_on>true</grid_on>
+        <sync_axes>false</sync_axes>
+        <dump_points1>false</dump_points1>
+        <dump_points2>false</dump_points2>
+        <log_y1>false</log_y1>
+        <log_y2>false</log_y2>
+        <varianceinflationfactor>false</varianceinflationfactor>
+        <plot_type>png16m</plot_type>
+        <plot_height>8</plot_height>
+        <plot_width>12</plot_width>
+        <plot_res>72</plot_res>
+        <plot_units>in</plot_units>
+        <mar>c(14,4,5,4)</mar>
+        <mgp>c(1,1,0)</mgp>
+        <cex>1</cex>
+        <title_weight>2</title_weight>
+        <title_size>1.4</title_size>
+        <title_offset>-1</title_offset>
+        <title_align>0.5</title_align>
+        <xtlab_orient>1</xtlab_orient>
+        <xtlab_perp>8.8</xtlab_perp>
+        <xtlab_horiz>0.5</xtlab_horiz>
+        <xtlab_freq>0</xtlab_freq>
+        <xtlab_size>1</xtlab_size>
+        <xlab_weight>1</xlab_weight>
+        <xlab_size>1</xlab_size>
+        <xlab_offset>11</xlab_offset>
+        <xlab_align>0.5</xlab_align>
+        <ytlab_orient>1</ytlab_orient>
+        <ytlab_perp>0.5</ytlab_perp>
+        <ytlab_horiz>0.5</ytlab_horiz>
+        <ytlab_size>1</ytlab_size>
+        <ylab_weight>1</ylab_weight>
+        <ylab_size>1</ylab_size>
+        <ylab_offset>-2</ylab_offset>
+        <ylab_align>0.5</ylab_align>
+        <grid_lty>3</grid_lty>
+        <grid_col>#cccccc</grid_col>
+        <grid_lwd>1</grid_lwd>
+        <grid_x>listX</grid_x>
+        <x2tlab_orient>1</x2tlab_orient>
+        <x2tlab_perp>1</x2tlab_perp>
+        <x2tlab_horiz>0.5</x2tlab_horiz>
+        <x2tlab_size>0.8</x2tlab_size>
+        <x2lab_size>0.8</x2lab_size>
+        <x2lab_offset>-0.5</x2lab_offset>
+        <x2lab_align>0.5</x2lab_align>
+        <y2tlab_orient>1</y2tlab_orient>
+        <y2tlab_perp>10</y2tlab_perp>
+        <y2tlab_horiz>-5</y2tlab_horiz>
+        <y2tlab_size>0.001</y2tlab_size>
+        <y2lab_size>1</y2lab_size>
+        <y2lab_offset>1</y2lab_offset>
+        <y2lab_align>0.5</y2lab_align>
+        <legend_box>o</legend_box>
+        <legend_inset>c(0, -.55)</legend_inset>
+        <legend_ncol>3</legend_ncol>
+        <legend_size>0.8</legend_size>
+        <caption_weight>1</caption_weight>
+        <caption_col>#333333</caption_col>
+        <caption_size>0.8</caption_size>
+        <caption_offset>-47</caption_offset>
+        <caption_align>0</caption_align>
+        <ci_alpha>0.05</ci_alpha>
+        <eqbound_low>-0.001</eqbound_low>
+        <eqbound_high>0.001</eqbound_high>
+        <plot_ci>c("none","none","none")</plot_ci>
+        <show_signif>c(FALSE,FALSE,FALSE)</show_signif>
+        <plot_disp>c(TRUE,TRUE,FALSE)</plot_disp>
+        <colors>c("#cd5c5cFF","#6495edFF","#8000ffFF")</colors>
+        <pch>c(20,20,20)</pch>
+        <type>c("b","b","b")</type>
+        <lty>c(1,1,1)</lty>
+        <lwd>c(1,1,1)</lwd>
+        <con_series>c(1,1,1)</con_series>
+        <order_series>c(1,2,3)</order_series>
+        <plot_cmd>dd=as.Date(dfPlot$fcst_init_beg); dd=dd[!is.na(dd)]; cap=paste0("WRF vs IMGW | ",min(dd)," -- ",max(dd)," | FULL domain"); mtext(cap,side=3,line=0.3,adj=0,cex=0.8,col="#333333",las=1); f=par("fig"); p=par("plt"); u=par("usr"); xL=f[1]+p[1]*diff(f[1:2]); xR=f[1]+p[2]*diff(f[1:2]); yB=f[3]+p[3]*diff(f[3:4]); yT=f[3]+p[4]*diff(f[3:4]); h2=(yT-yB)/4; y1=yB-0.01; y0=y1-h2; me=listSeries2[[1]]; r=range(c(me,0),na.rm=TRUE); z=.08*diff(r); if(!is.finite(z)||z==0)z=.1; yl=max(abs(r+c(-z,z))); yl=ceiling(yl*2)/2; yt=c(-yl,0,yl); par(fig=c(xL,xR,y0,y1),mar=c(0,0,0,0),new=TRUE); plot(listX,me,type="n",xlim=u[1:2],xaxs="i",ylim=c(-yl,yl),axes=FALSE,xlab="",ylab=""); xp=par("xpd"); par(xpd=isTRUE(0)); abline(h=yt,col="#cccccc",lty=3,lwd=.8); abline(h=0,col="#555555",lty=2,lwd=1); par(xpd=xp); lines(listX,me,type="b",pch=20,col="#8000ffFF"); axis(1,at=listX[seq(1,length(listX),2)],labels=FALSE); axis(2,at=yt,las=1); box(); mtext("ME [K]",side=2,line=2.8,cex=.9,las=0)</plot_cmd>
+        <legend>c("","","")</legend>
+        <create_html>TRUE</create_html>
+        <y1_lim>c()</y1_lim>
+        <x1_lim>c()</x1_lim>
+        <y1_bufr>0.04</y1_bufr>
+        <y2_lim>c()</y2_lim>
+    </plot>
+</plot_spec>
