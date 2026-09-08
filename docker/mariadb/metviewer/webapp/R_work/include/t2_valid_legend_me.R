@@ -2,7 +2,7 @@
 # Loaded from the METviewer R_work directory before closing the graphics device.
 # Legend placement matches the T2 fbar_obar_me_by_valid.xml profile.
 local({
-    legend_args=list(x="bottom", legend=listLegendDisp, col=listColorsDisp, lty=listLtyDisp, lwd=listLwdLeg, pch=listPchDisp, merge=FALSE, cex=0.8, bty="o", adj=0, xpd=TRUE, ncol=3, inset=c(0, -.55), x.intersp=1, y.intersp=.8);
+    legend_args=list(x="bottom", legend=listLegendDisp, col=listColorsDisp, lty=listLtyDisp, lwd=listLwdLeg, pch=listPchDisp, merge=FALSE, cex=0.8, bty="o", adj=0, xpd=TRUE, ncol=2, inset=c(0, -.55), x.intersp=1, y.intersp=.8);
     legend_bounds=do.call(legend,c(legend_args,list(plot=FALSE)))$rect;
     legend_pad_x=xinch(0.08);
     legend_pad_y=yinch(0.08);
