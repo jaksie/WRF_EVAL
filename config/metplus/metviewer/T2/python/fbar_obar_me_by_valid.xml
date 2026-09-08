@@ -186,7 +186,7 @@
         <y2lab_align>0.5</y2lab_align>
         <legend_box>n</legend_box>
         <legend_inset>c(0, -.3)</legend_inset>
-        <legend_ncol>3</legend_ncol>
+        <legend_ncol>2</legend_ncol>
         <legend_size>1.25</legend_size>
         <caption_weight>1</caption_weight>
         <caption_col>#64748b</caption_col>
@@ -207,7 +207,7 @@
         <con_series>c(1,1,1)</con_series>
         <order_series>c(1,2,3)</order_series>
         <plot_cmd />
-        <legend>c("WRF (FBAR)","IMGW (OBAR)","ME (right axis)")</legend>
+        <legend>c("WRF FBAR","IMGW OBAR","ME")</legend>
         <create_html>TRUE</create_html>
         <y1_lim>c()</y1_lim>
         <x1_lim>c()</x1_lim>

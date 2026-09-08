@@ -110,15 +110,15 @@
         </indep>
         <plot_stat>median</plot_stat>
         <tmpl>
-            <data_file>t2_fbar_obar_me_by_valid.data</data_file>
-            <plot_file>t2_fbar_obar_me_by_valid.png</plot_file>
-            <r_file>t2_fbar_obar_me_by_valid.R</r_file>
+            <data_file>plot_20260908_193725.data</data_file>
+            <plot_file>plot_20260908_193725.png</plot_file>
+            <r_file>plot_20260908_193725.R</r_file>
             <title>T2 | FBAR, OBAR &amp; ME</title>
             <x_label>Valid Time [UTC]</x_label>
             <y1_label>T2 [K]</y1_label>
-            <y2_label />
-            <caption />
-            <job_title />
+            <y2_label/>
+            <caption/>
+            <job_title/>
             <keep_revisions>false</keep_revisions>
             <listdiffseries1>list()</listdiffseries1>
             <listdiffseries2>list()</listdiffseries2>
@@ -149,9 +149,9 @@
         <title_size>1.4</title_size>
         <title_offset>-1</title_offset>
         <title_align>0.5</title_align>
-        <xtlab_orient>1</xtlab_orient>
-        <xtlab_perp>8.8</xtlab_perp>
-        <xtlab_horiz>0.5</xtlab_horiz>
+        <xtlab_orient>3</xtlab_orient>
+        <xtlab_perp>.5</xtlab_perp>
+        <xtlab_horiz>1.8</xtlab_horiz>
         <xtlab_freq>6</xtlab_freq>
         <xtlab_size>0.8</xtlab_size>
         <xlab_weight>1</xlab_weight>
@@ -186,7 +186,7 @@
         <y2lab_align>0.5</y2lab_align>
         <legend_box>o</legend_box>
         <legend_inset>c(0, -.55)</legend_inset>
-        <legend_ncol>3</legend_ncol>
+        <legend_ncol>2</legend_ncol>
         <legend_size>0.8</legend_size>
         <caption_weight>1</caption_weight>
         <caption_col>#333333</caption_col>
@@ -206,7 +206,8 @@
         <lwd>c(1,1,1)</lwd>
         <con_series>c(1,1,1)</con_series>
         <order_series>c(1,2,3)</order_series>
-        <plot_cmd>dd=as.Date(dfPlot$fcst_valid_beg); dd=dd[!is.na(dd)]; cap=paste0("WRF vs IMGW | ",min(dd)," -- ",max(dd)," | FULL domain"); mtext(cap,side=3,line=0.3,adj=0,cex=0.8,col="#333333",las=1); f=par("fig"); p=par("plt"); u=par("usr"); xL=f[1]+p[1]*diff(f[1:2]); xR=f[1]+p[2]*diff(f[1:2]); yB=f[3]+p[3]*diff(f[3:4]); yT=f[3]+p[4]*diff(f[3:4]); h2=(yT-yB)/4; y1=yB-0.01; y0=y1-h2; me=listSeries2[[1]]; r=range(c(me,0),na.rm=TRUE); z=.08*diff(r); if(!is.finite(z)||z==0)z=.1; yl=max(abs(r+c(-z,z))); yl=ceiling(yl*2)/2; yt=c(-yl,0,yl); par(fig=c(xL,xR,y0,y1),mar=c(0,0,0,0),new=TRUE); plot(listX,me,type="n",xlim=u[1:2],xaxs="i",ylim=c(-yl,yl),axes=FALSE,xlab="",ylab=""); xp=par("xpd"); par(xpd=isTRUE(0)); abline(h=yt,col="#cccccc",lty=3,lwd=.8); abline(h=0,col="#555555",lty=2,lwd=1); par(xpd=xp); lines(listX,me,type="b",pch=20,col="#8000ffFF"); axis(1,at=listX[seq(1,length(listX),2)],labels=FALSE); axis(2,at=yt,las=1); box(); mtext("ME [K]",side=2,line=2.8,cex=.9,las=0)</plot_cmd>
+        <!-- Keep plot_cmd short; helper is mounted with the METviewer webapp. -->
+        <plot_cmd>source("include/t2_valid_legend_me.R")</plot_cmd>
         <legend>c("","","")</legend>
         <create_html>TRUE</create_html>
         <y1_lim>c()</y1_lim>
