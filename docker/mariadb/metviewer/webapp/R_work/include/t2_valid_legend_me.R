@@ -1,4 +1,4 @@
-# T2 valid-time plot: white legend padding, caption and lower ME panel.
+# T2 valid-time plot: white legend/title padding, caption and lower ME panel.
 # Loaded from the METviewer R_work directory before closing the graphics device.
 # Legend placement matches the T2 fbar_obar_me_by_valid.xml profile.
 local({
@@ -8,6 +8,19 @@ local({
     legend_pad_y=yinch(0.08);
     rect(legend_bounds$left-legend_pad_x,legend_bounds$top-legend_bounds$h-legend_pad_y,legend_bounds$left+legend_bounds$w+legend_pad_x,legend_bounds$top+legend_pad_y,col="white",border=NA,xpd=NA);
     do.call(legend,c(legend_args,list(bg="white")));
+    # Match the main template's mtext(line=1, padj=11, adj=.5, cex=1).
+    # Cover the title and crossing date labels before redrawing the title.
+    title_label = "Valid Time [UTC]";
+    title_height = strheight(title_label, cex=1, font=1);
+    title_width = strwidth(title_label, cex=1, font=1);
+    title_x = mean(par("usr")[1:2]);
+    margin_line = yinch(par("cin")[2] * par("mex"));
+    title_y = par("usr")[3] - (1 + par("ylbias")) * margin_line -
+        (11 + .5) * title_height;
+    rect(title_x-title_width/2-xinch(.08), title_y-title_height/2-yinch(.08),
+         title_x+title_width/2+xinch(.08), title_y+title_height/2+yinch(.08),
+         col="white", border=NA, xpd=NA);
+    mtext(title_label, side=1, line=1, padj=11, adj=.5, cex=1, font=1, las=0);
     dd=as.Date(dfPlot$fcst_valid_beg);
     dd=dd[!is.na(dd)];
     cap=paste0("WRF vs IMGW | ",min(dd)," -- ",max(dd)," | FULL domain");
