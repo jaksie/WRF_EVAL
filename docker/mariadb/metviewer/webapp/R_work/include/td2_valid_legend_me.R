@@ -50,8 +50,8 @@ local({
     abline(h=0,col="#555555",lty=2,lwd=1);
     par(xpd=xp);
     lines(listX,me,type="b",pch=20,col="#8000ffFF");
-    axis(1,at=listX[seq(1,length(listX),2)],labels=FALSE);
-    axis(2,at=yt,las=1);
+    axis(1,at=listX[seq(1,length(listX),2)],labels=FALSE,tcl=.35);
+    axis(2,at=yt,las=1,tcl=.35);
     box();
     mtext("ME [°C]",side=2,line=2.8,cex=.9,las=0);
 })
