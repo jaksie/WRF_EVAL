@@ -30,3 +30,9 @@ venv/
 # --- Różne ---
 *.log
 .DS_Store
+
+# --- Foldery ---
+scripts/archive/
+tmp/
+input/
+output/
