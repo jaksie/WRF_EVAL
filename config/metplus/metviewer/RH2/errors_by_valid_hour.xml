@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plot_spec>
-    <!-- RH2 values are in percent; error units pp denote percentage points. -->
-    <!-- Median of CNT statistics by valid hour (UTC), pooling dates and lead times. Use plot_fix to restrict leads or initialization cycles when needed. -->
     <connection>
         <host>mariadb</host>
         <database>mv_wrf_surface</database>

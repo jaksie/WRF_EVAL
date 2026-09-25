@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plot_spec>
-    <!-- Based on test.xml: median aggregation, WRF, FULL domain; configure connection credentials when needed. -->
     <connection>
         <host>mariadb</host>
         <database>mv_wrf_surface</database>
@@ -54,7 +53,6 @@
         </plot_fix>
         <plot_cond />
         <indep equalize="false" name="fcst_valid_beg">
-            <!-- Fixed example dates from local PointStat output; update this list for another period. -->
             <val label="2026-01-15 03:00:00" plot_val="">2026-01-15 03:00:00</val>
             <val label="2026-01-15 04:00:00" plot_val="">2026-01-15 04:00:00</val>
             <val label="2026-01-15 05:00:00" plot_val="">2026-01-15 05:00:00</val>
@@ -206,7 +204,6 @@
         <lwd>c(1,1,1)</lwd>
         <con_series>c(1,1,1)</con_series>
         <order_series>c(1,2,3)</order_series>
-        <!-- Keep plot_cmd short; helper is mounted with the METviewer webapp. -->
         <plot_cmd>source("include/t2_valid_legend_me.R")</plot_cmd>
         <legend>c("","","")</legend>
         <create_html>TRUE</create_html>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plot_spec>
-    <!-- Python backend, standard Series plot: Y1 statistics and ME on the right Y2 axis. R-style vectors and template identifier belong to METviewer XML syntax. -->
     <connection>
         <host>mariadb</host>
         <database>mv_wrf_surface</database>
@@ -54,7 +53,6 @@
         </plot_fix>
         <plot_cond />
         <indep equalize="false" name="fcst_valid_beg">
-            <!-- Explicit valid times copied from the R profile; update the selection in METviewer for another period. -->
             <val label="2026-01-15 03:00:00" plot_val="">2026-01-15 03:00:00</val>
             <val label="2026-01-15 04:00:00" plot_val="">2026-01-15 04:00:00</val>
             <val label="2026-01-15 05:00:00" plot_val="">2026-01-15 05:00:00</val>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plot_spec>
-    <!-- Python backend, standard Series plot: Y1 statistics and ME on the right Y2 axis. R-style vectors and template identifier belong to METviewer XML syntax. -->
     <connection>
         <host>mariadb</host>
         <database>mv_wrf_surface</database>

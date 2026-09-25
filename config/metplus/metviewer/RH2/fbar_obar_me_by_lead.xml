@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plot_spec>
-    <!-- RH2 values are in percent; error units pp denote percentage points. -->
-    <!-- Based on test.xml: median aggregation, WRF, FULL domain; configure connection credentials when needed. -->
     <connection>
         <host>mariadb</host>
         <database>mv_wrf_surface</database>
